@@ -4,34 +4,15 @@
 
 
 //Register Map
-#define GLOBAL_CONFIG 	0x00
-#define PWM_FREQ 		0x01
-#define FAN_1_CONFIG 	0x02
-#define FAN_2_CONFIG 	0x03
-#define FAN_3_CONFIG 	0x04
-#define FAN_4_CONFIG 	0x05
-#define FAN_5_CONFIG 	0x06
-#define FAN_6_CONFIG 	0x07
-#define FAN_1_DYNAMICS 	0x08
-#define FAN_2_DYNAMICS 	0x09
-#define FAN_3_DYNAMICS 	0x0A
-#define FAN_4_DYNAMICS 	0x0B
-#define FAN_5_DYNAMICS 	0x0C
-#define FAN_6_DYNAMICS 	0x0D
+#define GLOBAL_CONFIG 		0x00
+#define PWM_FREQ 			0x01
+#define FAN_CONFIG(ch)		(0x02+(ch-1))
+#define FAN_DYNAMICS(ch) 	(0x08+(ch-1))
 
-#define TACH1_COUNT		0x18
-#define TACH2_COUNT		0x1A
-#define TACH3_COUNT		0x1C
-#define TACH4_COUNT		0x1E
-#define TACH5_COUNT		0x20
-#define TACH6_COUNT		0x22
-
-#define TACH1_TARGET	0x50
-#define TACH2_TARGET	0x52
-#define TACH3_TARGET	0x54
-#define TACH4_TARGET	0x56
-#define TACH5_TARGET	0x58
-#define TACH6_TARGET	0x5A
+#define TACH_COUNT(ch)		(0x18+(ch-1)*2)
+#define PWM_DUTY_CYCLE(ch)		(0x30+(ch-1)*2)
+#define PWMOUT(ch)			(0x40+(ch-1)*2)
+#define TACH_TARGET(ch)		(0x50+(ch-1)*2)
 
 
 
