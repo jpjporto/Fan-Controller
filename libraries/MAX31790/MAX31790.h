@@ -63,6 +63,7 @@ public:
 	
 	// Set functions
 	void setRPM(uint16_t, uint8_t);
+	void setPWM(uint16_t, uint8_t);
 	
 	void setPWMMode(uint8_t);
 	void setRPMMode(uint8_t);

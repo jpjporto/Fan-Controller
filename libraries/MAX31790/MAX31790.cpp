@@ -24,7 +24,7 @@ MAX31790::initialize()
 {
 	MAX31790::setRPM(2500, 1);
 	I2Cdev::writeBit(devAddr, FAN_CONFIG(1), 3, 1);
-	MAX31790::setPWM(300);
+	MAX31790::setPWM(300, 1);
 }
 
 // Get Functions
