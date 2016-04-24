@@ -20,8 +20,15 @@ MAX31790::MAX31790(int address)
 
 }
 
+MAX31790::initialize()
+{
+	setRPM(2500, 1);
+	I2Cdev::writeBit(devAddr, FAN_CONFIG(1), 3, 1);
+	setPWM(300);
+}
+
 // Get Functions
-uint16_t getRPM(uint8_t fan_num)
+uint16_t MAX31790::getRPM(uint8_t fan_num)
 {
 	//Reads two 
 	I2Cdev::readBytes(devAddr, TACH_COUNT(fan_num), 2, buffer);
@@ -36,20 +43,28 @@ uint16_t getRPM(uint8_t fan_num)
 
 
 // Set Functions
-void setRPM(uint16_t rpm, uint8_t fan_num)
+void MAX31790::setRPM(uint16_t rpm, uint8_t fan_num)
 {
-	uint16_t tach_count = 60*SR*8192/(NP*rpm);
+	uint16_t tach_count = 60*SR*8192/(NP*rpm)<<5;
 	
 	I2Cdev::writeBytes(devAddr, TACH_TARGET(fan_num), 2, &tach_count)
 	
 }
 
-void setRPMMode(uint8_t fan_num)
+void MAX31790::setPWM(uint16_t pwm, uint8_t fan_num)
+{
+	uint16_t pwm_bit = pwm<<7;
+	
+	I2Cdev::writeBytes(devAddr, TACH_TARGET(fan_num), 2, &pwm_bit)
+	
+}
+
+void MAX31790::setRPMMode(uint8_t fan_num)
 {
 	I2Cdev::writeBit(devAddr, FAN_CONFIG(fan_num), 7, 1);
 }
 
-void setPWMMode(uint8_t fan_num)
+void MAX31790::setPWMMode(uint8_t fan_num)
 {
 	I2Cdev::writeBit(devAddr, FAN_CONFIG(fan_num), 7, 0);
 }
