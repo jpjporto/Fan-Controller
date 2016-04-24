@@ -54,7 +54,7 @@ public:
 	// Contructor
 	MAX31790(int);
 	
-	initialize();
+	void initialize();
 	
 	
 	// Get functions
