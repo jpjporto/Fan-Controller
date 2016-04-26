@@ -33,19 +33,18 @@
 
 
 //Default Register Values
-#define DEFAULT_FAN_CONFIG 	B10001000
-#define DEFAULT_FAN_DYN 	B01001100
+#define DEFAULT_FAN_CONFIG 	0b10001000
+#define DEFAULT_FAN_DYN 	0b01001100
 
 
 
-#define SR 4 //speed range
+#define _SR 4 //speed range
 #define NP 2 //number of TACH pulse per revolution
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b)) 
 #define MIN(a, b) (((a) > (b)) ? (b) : (a))
 
-
-
+#include "I2Cdev.h"
 
 class MAX31790
 {
