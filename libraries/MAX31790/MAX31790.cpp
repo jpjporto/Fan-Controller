@@ -3,11 +3,12 @@
  *	MAX31790 Device Class
  *	Based on Maxim MAX31790 datasheet rev. 2, 01/2015
  *
- *	Latest update on 04/04/2016 by Joao Paulo Porto <jpjporto(at)gmail.com>
+ *	Latest update on 07/24/2016 by Joao Paulo Porto <jpjporto(at)gmail.com>
  *
  *	Changelog:
- *		v0.0.1 - initial release
- *		v0.0.2 - Bug fixes
+ *		v0.0.1 - initial release.
+ *		v0.0.2 - Bug fixes.
+ *		v0.1.0 - Code stable enough for me to trust it on my loop.
  *
  *************************************************/
 
@@ -23,16 +24,33 @@ MAX31790::MAX31790(int address)
 
 void MAX31790::initialize()
 {
-	MAX31790::setRPM(2500, 1);
-	I2Cdev::writeBit(devAddr, FAN_CONFIG(1), 3, 1);
-	MAX31790::setPWM(300, 1);
+	for(int i=1; i<=6; i++)
+	{
+		MAX31790::setRPM(2500, i);
+		I2Cdev::writeBit(devAddr, FAN_CONFIG(i), 3, 1);
+	}
+	//MAX31790::setPWM(311, 1);
 }
 
 // Get Functions
 uint16_t MAX31790::getRPM(uint8_t fan_num)
 {
+	buffer[0] = 0;
+	buffer[1] = 0;
 	//Reads two 
 	I2Cdev::readBytes(devAddr, TACH_COUNT(fan_num), 2, buffer);
+	uint16_t tach_out = ((((int16_t)buffer[0]) << 8) | buffer[1]) >> 5;
+	
+	//convert to RPM
+	return 60*_SR*8192/(NP*tach_out);
+}
+
+uint16_t MAX31790::getRPMTarget(uint8_t fan_num)
+{
+	buffer[0] = 0;
+	buffer[1] = 0;
+	//Reads two 
+	I2Cdev::readBytes(devAddr, TACH_TARGET(fan_num), 2, buffer);
 	uint16_t tach_out = ((((int16_t)buffer[0]) << 8) | buffer[1]) >> 5;
 	
 	//convert to RPM
@@ -47,6 +65,10 @@ uint16_t MAX31790::getRPM(uint8_t fan_num)
 void MAX31790::setRPM(uint16_t rpm, uint8_t fan_num)
 {
 	uint16_t tach_count = 60*_SR*8192/(NP*rpm)<<5;
+	if(rpm == 0)
+	{
+		tach_count = 0b1111111111111111;
+	}
 	buffer[0] = tach_count >> 8;
 	buffer[1] = tach_count;
 	
@@ -60,7 +82,7 @@ void MAX31790::setPWM(uint16_t pwm, uint8_t fan_num)
 	buffer[0] = pwm_bit >> 8;
 	buffer[1] = pwm_bit;
 	
-	I2Cdev::writeBytes(devAddr, TACH_TARGET(fan_num), 2, buffer);
+	I2Cdev::writeBytes(devAddr, PWMOUT(fan_num), 2, buffer);
 	
 }
 

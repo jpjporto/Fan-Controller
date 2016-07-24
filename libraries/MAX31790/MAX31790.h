@@ -1,6 +1,6 @@
 #ifndef _MAX31790_h
 #define _MAX31790_h
-#define LIBRARY_VERSION	0.0.1
+#define MAX_LIBRARY_VERSION	0.1.0
 
 
 //Register Map
@@ -58,6 +58,7 @@ public:
 	
 	// Get functions
 	uint16_t getRPM(uint8_t);
+	uint16_t getRPMTarget(uint8_t);
 	
 	
 	// Set functions
@@ -72,7 +73,7 @@ private:
 
 	//variables
 	uint8_t devAddr;
-	uint8_t buffer[6];
+	uint8_t buffer[2];
 	
 	
 	
