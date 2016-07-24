@@ -38,15 +38,19 @@ If anyone is interested in helping out with the code, feel free to push commits.
 ### Repository structure ###
 
 * ./esp_main
+
 Includes the code for the ESP8266 board. For more information about the ESP8266 board and flashing it, please refer to https://github.com/esp8266/Arduino
 
 * ./libraries
+
 Includes the necessary libraries to run the Teensy code. The I2Cdev library included is probably out-of-date, but guaranteed to work with the code in this repo.
 
 * ./PCB
+
 Includes all the schematic files necessary to modify the pcb board along with gerber files for manufacturing. The pcb was generated using Altium Designer 16, however, feel free to email me asking for files for difference programs. I believe Altium allows me to generate source files for many different programs.
 
 * ./wc_board
+
 Includes the main code. I'm using a Teensy 3.2.
 
 ### Third-Party Software ###
